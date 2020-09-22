@@ -1,0 +1,65 @@
+service: yanCuiEcommerce
+
+plugins:
+  - serverless-pseudo-parameters
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: 'eu-west-2'
+  profile: serverless-marco
+  iamRoleStatements:
+    - Effect: Allow
+      Action: dynamodb:scan
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/restaurants
+    - Effect: Allow
+      Action: execute-api:Invoke
+      Resource: arn:aws:execute-api:#{AWS::Region}:#{AWS::AccountId}:*/*/GET/restaurants
+
+functions:
+  get-index:
+    handler: functions/getIndex.handler
+    events:
+      - http:
+          path: /
+          method: get
+    environment:
+      restaurants_api_endpoint: https://v3kvmcrg7f.execute-api.eu-west-2.amazonaws.com/dev/restaurants
+      cognito_user_pool_id: eu-west-2_81YnpSexP
+      cognito_client_id: 1ujaun7qpkmqrca0q1ri7ijhvu
+
+  get-restaurants:
+    handler: functions/getRestaurants.handler
+    events:
+      - http:
+          path: /restaurants/
+          method: get
+          authorizer: aws_iam
+    environment:
+      restaurants_table: restaurants
+
+  search-restaurants:
+    handler: functions/searchRestaurants.handler
+    events:
+      - http:
+          path: /restaurants/search
+          method: post
+          authorizer:
+            arn: arn:aws:cognito-idp:eu-west-2:398937368645:userpool/eu-west-2_81YnpSexP
+    environment:
+      restaurants_table: restaurants
+
+resources:
+  Resources:
+    restaurantsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: restaurants
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
