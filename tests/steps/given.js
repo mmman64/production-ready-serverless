@@ -11,12 +11,11 @@ const an_authenticated_user = async () => {
   const clientId = process.env.cognito_server_client_id;
 
   const firstName = chance.first();
+  const middleName = chance.first();
   const lastName = chance.last();
-  const username = `test-${firstName}-${lastName}-${chance.string({
-    length: 8,
-  })}`;
+  const username = `test-${firstName}-${middleName}-${lastName}`;
   const password = random_password();
-  const email = `${firstName}-${lastName}@big-mouth.com`;
+  const email = `${username}@big-mouth.com`;
 
   // create authenticated user
   const createReq = {

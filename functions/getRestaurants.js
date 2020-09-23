@@ -5,8 +5,8 @@ module.exports.handler = async event => {
   const restaurants = await getRestaurants(defaultResultsCount);
 
   return {
-    status: 200,
-    data: JSON.stringify(restaurants),
+    statusCode: 200,
+    body: JSON.stringify(restaurants),
   };
 };
 

@@ -39,12 +39,12 @@ module.exports.handler = async event => {
   const html = Mustache.render(template, view);
 
   return {
-    status: 200,
-    data: html,
+    statusCode: 200,
     // overriding API Gateway's default JSON content type
     headers: {
       'content-type': 'text/html; charset=UTF-8',
     },
+    body: html,
   };
 };
 
@@ -67,10 +67,10 @@ const getRestaurants = async () => {
   };
 
   // aws4 used for signing doesn't support aws profiles so we need to manually grab values
-  if (!process.env.AWS_ACCES_KEY_ID) {
+  if (!process.env.AWS_ACCESS_KEY_ID) {
     const { credentials } = await promisify(awscred.load)();
 
-    process.env.AWS_ACCES_KEY_ID = credentials.accessKeyId;
+    process.env.AWS_ACCESS_KEY_ID = credentials.accessKeyId;
     process.env.AWS_SECRET_ACCESS_KEY = credentials.secretAccessKey;
   }
   console.log('AWS credentials loaded');
@@ -96,6 +96,6 @@ const getRestaurants = async () => {
 
     return data;
   } catch (err) {
-    console.log(err);
+    console.log(`This is the error!`, err);
   }
 };

@@ -34,6 +34,8 @@ const viaHttp = async (relPath, method, opts) => {
   const url = `${root}/${relPath}`;
   console.log(`invoking via HTTP ${method} ${url}`);
 
+  console.log(`***************** This is opts **********************`, opts);
+
   try {
     let config = {
       method,
@@ -41,7 +43,7 @@ const viaHttp = async (relPath, method, opts) => {
     };
 
     // when making a post request to search by theme
-    const data = _.get(opts, 'data');
+    const data = _.get(opts, 'body');
 
     if (data) {
       config['data'] = data;
@@ -60,7 +62,18 @@ const viaHttp = async (relPath, method, opts) => {
       };
     }
 
-    return await axios(config);
+    console.log(
+      `***************** This is config **********************`,
+      config
+    );
+
+    const res = await axios(config);
+
+    return {
+      statusCode: res.status,
+      headers: res.headers,
+      body: res.data,
+    };
   } catch (err) {
     if (err.status) {
       return {
@@ -85,8 +98,8 @@ const viaHandler = async (event, functionName) => {
     'application/json'
   );
 
-  if (response.data && contentType === 'application/json') {
-    response.data = JSON.parse(response.data);
+  if (response.body && contentType === 'application/json') {
+    response.body = JSON.parse(response.body);
   }
 
   return response;
@@ -111,13 +124,13 @@ const we_invoke_get_restaurants = async () => {
 };
 
 const we_invoke_search_restaurants = async (theme, user) => {
-  const data = JSON.stringify({ theme });
+  const body = JSON.stringify({ theme });
   const auth = user.idToken;
 
   const res =
     mode === 'handler'
-      ? viaHandler({ data }, 'searchRestaurants')
-      : viaHttp('restaurants/search', 'POST', { data, auth });
+      ? viaHandler({ body }, 'searchRestaurants')
+      : viaHttp('restaurants/search', 'POST', { body, auth });
 
   return res;
 };

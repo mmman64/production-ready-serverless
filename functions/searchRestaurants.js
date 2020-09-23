@@ -2,15 +2,16 @@ const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = async event => {
-  const req = JSON.parse(event.data);
+  const req = event.body ? JSON.parse(event.body) : JSON.parse(event.data);
+
   const restaurants = await findRestaurantsByTheme(
     req.theme,
     defaultResultsCount
   );
 
   return {
-    status: 200,
-    data: JSON.stringify(restaurants),
+    statusCode: 200,
+    body: JSON.stringify(restaurants),
   };
 };
 

@@ -20,10 +20,10 @@ describe(`Given an authenticated user`, async () => {
     it(`Should return an array of 4 restaurants`, async () => {
       let res = await when.we_invoke_search_restaurants('cartoon', user);
 
-      expect(res.status).to.equal(200);
-      expect(res.data).to.have.lengthOf(4);
+      expect(res.statusCode).to.equal(200);
+      expect(res.body).to.have.lengthOf(4);
 
-      for (let restaurant of res.data) {
+      for (let restaurant of res.body) {
         expect(restaurant).to.have.property('name');
         expect(restaurant).to.have.property('image');
       }
