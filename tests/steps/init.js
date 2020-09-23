@@ -16,7 +16,7 @@ const init = async () => {
   process.env.restaurants_api_endpoint =
     'https://v3kvmcrg7f.execute-api.eu-west-2.amazonaws.com/dev/restaurants';
 
-  // aws4 used for signing doesn't support aws profiles so we need to manually grab values
+  // aws4 used for signing does not support aws profiles so we need to manually grab values
   if (!process.env.AWS_ACCESS_KEY_ID) {
     const { credentials } = await promisify(awscred.load)();
 
