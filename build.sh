@@ -26,7 +26,7 @@ elif [ "$1" = "deploy" ] && [ $# -eq 2 ]; then
   STAGE=$2
 
   npm install
-  'node_modules/.bin/sls' deploy -s $STAGE
+  'node_modules/.bin/sls' deploy -s $STAGE --aws-profile serverless-marco
 else
   instruction
   exit 1
