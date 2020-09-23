@@ -67,10 +67,10 @@ const getRestaurants = async () => {
   };
 
   // aws4 used for signing doesn't support aws profiles so we need to manually grab values
-  if (!process.env.AWS_ACCESS_KEY_ID) {
+  if (!process.env.aws_access_key_ID) {
     const { credentials } = await promisify(awscred.load)();
 
-    process.env.AWS_ACCESS_KEY_ID = credentials.accessKeyId;
+    process.env.aws_access_key_ID = credentials.accessKeyId;
     process.env.AWS_SECRET_ACCESS_KEY = credentials.secretAccessKey;
 
     if (credentials.sessionToken) {
