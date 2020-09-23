@@ -3,7 +3,7 @@ const axios = require('axios');
 const Mustache = require('mustache');
 const aws4 = require('aws4');
 const URL = require('url');
-const awscred = require('awscred');
+const awscred = require('../lib/awscred');
 const { promisify } = require('util');
 
 // populated by Lambda runtime automatically
@@ -67,10 +67,10 @@ const getRestaurants = async () => {
   };
 
   // aws4 doesn't support aws profiles so we need to manually grab values
-  if (!process.env.aws_access_key_id) {
+  if (!process.env.AWS_ACCESS_KEY_ID) {
     const { credentials } = await promisify(awscred.load)();
 
-    process.env.aws_access_key_id = credentials.accessKeyId;
+    process.env.AWS_ACCESS_KEY_ID = credentials.accessKeyId;
     process.env.AWS_SECRET_ACCESS_KEY = credentials.secretAccessKey;
 
     if (credentials.sessionToken) {
