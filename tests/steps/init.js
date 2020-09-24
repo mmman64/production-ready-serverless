@@ -1,5 +1,4 @@
-const awscred = require('awscred');
-const { promisify } = require('util');
+const aws4 = require('../../lib/aws4');
 
 let initialised = false;
 
@@ -16,18 +15,7 @@ const init = async () => {
   process.env.restaurants_api_endpoint =
     'https://v3kvmcrg7f.execute-api.eu-west-2.amazonaws.com/dev/restaurants';
 
-  // aws4 used for signing does not support aws profiles so we need to manually grab values
-  if (!process.env.AWS_ACCESS_KEY_ID) {
-    const { credentials } = await promisify(awscred.load)();
-
-    process.env.AWS_ACCESS_KEY_ID = credentials.accessKeyId;
-    process.env.AWS_SECRET_ACCESS_KEY = credentials.secretAccessKey;
-
-    if (credentials.sessionToken) {
-      process.env.AWS_SESSION_TOKEN = credentials.sessionToken;
-    }
-  }
-  console.log('AWS credentials loaded');
+  await aws4.init();
 
   initialised = true;
 };

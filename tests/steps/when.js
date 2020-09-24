@@ -1,7 +1,7 @@
 const APP_ROOT = '../../';
 
 const _ = require('lodash');
-const aws4 = require('aws4');
+const aws4 = require('../../lib/aws4');
 const URL = require('url');
 const axios = require('axios');
 const mode = process.env.TEST_MODE;
@@ -34,8 +34,6 @@ const viaHttp = async (relPath, method, opts) => {
   const url = `${root}/${relPath}`;
   console.log(`invoking via HTTP ${method} ${url}`);
 
-  console.log(`***************** This is opts **********************`, opts);
-
   try {
     let config = {
       method,
@@ -61,11 +59,6 @@ const viaHttp = async (relPath, method, opts) => {
         headers,
       };
     }
-
-    console.log(
-      `***************** This is config **********************`,
-      config
-    );
 
     const res = await axios(config);
 

@@ -10,7 +10,6 @@
   "author": "Marco McNulty",
   "license": "ISC",
   "dependencies": {
-    "aws4": "^1.10.1",
     "axios": "^0.20.0",
     "lodash": "^4.17.20",
     "mustache": "^4.0.1"
