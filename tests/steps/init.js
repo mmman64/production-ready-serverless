@@ -1,4 +1,4 @@
-const awscred = require('../../lib/awscred');
+const awscred = require('awscred');
 const { promisify } = require('util');
 
 let initialised = false;

@@ -3,7 +3,7 @@ const axios = require('axios');
 const Mustache = require('mustache');
 const aws4 = require('aws4');
 const URL = require('url');
-const awscred = require('../lib/awscred');
+const awscred = require('awscred');
 const { promisify } = require('util');
 
 // populated by Lambda runtime automatically
